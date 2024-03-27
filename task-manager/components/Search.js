@@ -48,7 +48,7 @@ function Search() {
       datalist=[];
     }
     catch(error){
-      console.log(error);
+      console.log(error.cause);
     }
   }
 

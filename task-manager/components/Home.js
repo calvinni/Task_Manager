@@ -41,7 +41,7 @@ function Home()  {
     } 
     catch (error) {
       console.log("Some error occured while fetching data. Check console logs for details.");
-      console.log(error);
+      console.log(error.cause);
     }
   };
 
@@ -90,7 +90,7 @@ function Home()  {
       //setStateDirty(true);
     }
     catch(error){
-      console.log(error);
+      console.log(error.cause);
     }
   }
 

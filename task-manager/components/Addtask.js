@@ -103,7 +103,7 @@ function AddTask() {
     } 
     catch (error) {
       console.log("Some error occured while caching data. Check console logs for details.");
-      console.log(error);
+      console.log(error.cause);
     }
   };
   

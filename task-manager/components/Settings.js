@@ -30,7 +30,7 @@ function Settings()  {
     } 
     catch (error) {
       alert("Some error occured while fetching data. Check console logs for details.");
-      console.log(error);
+      console.log(error.cause);
     }
   };
 
@@ -42,7 +42,7 @@ function Settings()  {
     } 
     catch (error) {
       alert("Some error occured while caching data. Check console logs for details.");
-      console.log(error);
+      console.log(error.cause);
     }
   };
 
