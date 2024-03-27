@@ -15,4 +15,4 @@ How to run the Task manager app on expo snack:
 
 ![image](https://github.com/calvinni/Task_Manager/assets/109656337/8a26e307-02ae-48c4-8a17-d2d10df68ae0)
 
-6. Make sure all packages are updated and now you should be able to run the app using the andriod or the IOS emulator on the right. 
+5. Make sure all packages are updated and now you should be able to run the app using the andriod or the IOS emulator on the right. 
