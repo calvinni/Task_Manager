@@ -73,6 +73,24 @@ function Search() {
         ]);
       };
 
+  const Editnav = (item) => {
+    navigation.navigate('Edit', {
+        key: item.key,
+        name: item.name,
+        priority: item.priority,
+        description: item.description,
+        duedate: item.duedate,
+        progress: item.progress,
+      })
+  };
+
+  const EditAlert = (item) => {
+        Alert.alert('Edit', 'Do you want to edit ' + item.name + '?', [
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          {text: 'OK', onPress: () => Editnav(item)},
+        ]);
+      };
+
   useEffect(() => {
         fetchData();
         console.log("Search")
@@ -115,12 +133,14 @@ function Search() {
               extraData={SelectedFilter}
               renderItem={({item}) => 
                 <TouchableOpacity style={styles.item}>
-                  <Text style={styles.TaskName}>{item.name} </Text>
+                  <Text style={styles.TaskName}>{item.name} ({item.progress})</Text>
                   <Text style={styles.TaskPiority}>Priority Level: {item.priority == '1'? "Low" : 
                                                                     item.priority == '2'? "Medium" : "High"}</Text>
                   <Text style={styles.TaskDescription}>{item.description} </Text>
                   <Text style={styles.TaskDueDate}>Due date: {item.duedate} </Text>
-                  <Text style={styles.staricon} onPress={() => DeleteAlert(item)}><Feather name="trash" size={24} color="black" /></Text>
+                  <Text style={styles.staricon}><Feather name="trash" size={24} color="black" onPress={() => DeleteAlert(item)}/>
+                                                {'     '}
+                                                <AntDesign name="edit" size={24} color="black" onPress={() => EditAlert(item)}/></Text>
                 </TouchableOpacity>
               }
               keyExtractor={item => item.key}

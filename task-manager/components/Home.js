@@ -26,7 +26,7 @@ function Home()  {
   var datalist = [];
   const [Sortfav, setSortfav] = useState(null);
   var [counter, setcounter] = useState();
-  var [showstate, setshowstate] = useState('InProgress');
+  var [showstate, setshowstate] = useState('In Progress');
 
   Sortfav_token = async () => AsyncStorage.getItem('Sortfav');
 
@@ -97,20 +97,22 @@ function Home()  {
   const checkroute = async() => {
     if (route.params?.add == true) {
       console.log(counter);
+      var incementID = counter+1;
       var tobecachevalue = {name: route.params.name,
                             priority: route.params.priority, 
                             description: route.params.description, 
                             duedate: route.params.duedate, 
                             progress: route.params.progress};
-      await cache.set(counter+1, tobecachevalue);
-      var updatetask = {"key": counter+1, 
+      await cache.set(incementID, tobecachevalue);
+      var updatetask = {"key": incementID, 
                         "name": route.params.name,
                         "priority": route.params.priority, 
                         "description": route.params.description, 
                         "duedate": route.params.duedate,
-                        "progress": route.params.progress};
+                        "progress": "In Progress"};
       console.log(updatetask)
       settaskIP([...task_dataIP, updatetask]);
+      settask([...task_data, updatetask]);
       // Clear navigation params
       navigation.setParams({ name: undefined, priority: undefined, description: undefined, duedate: undefined, progress: undefined, add: undefined}); 
     }
@@ -129,14 +131,14 @@ function Home()  {
   const Delete = async(key) => {
       console.log("Deleted " + key)
       await cache.remove(key);
-        
+      settask(task_data.filter(item => item.key !== key));
       settaskIP(task_dataIP.filter(item => item.key !== key));
       settaskC(task_dataC.filter(item => item.key !== key));
       settaskO(task_dataO.filter(item => item.key !== key));
     };  
 
   const DeleteAlert = (item) => {
-        Alert.alert('Delete', 'Are you sure you want to delete ' + item.key + '?', [
+        Alert.alert('Delete', 'Are you sure you want to delete ' + item.name + '?', [
           {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
           {text: 'OK', onPress: () => Delete(item.key)},
         ]);
@@ -161,7 +163,7 @@ function Home()  {
       };
 
   const showstate1 = () => {
-      setshowstate('InProgress');
+      setshowstate('In Progress');
       //console.log(showstate);
   }
   const showstate2 = () => {
@@ -174,11 +176,11 @@ function Home()  {
   }
 
   useEffect(() => {
-    fetchData();
     FetchSort();
     checkroute();
+    fetchData();
     console.log("Home");
-    console.log(showstate);
+    //console.log(showstate);
   }, [isFocused]);
     
     return (
@@ -202,7 +204,7 @@ function Home()  {
             <Grid>
               <Row style={styles.row}>
                 <View style={styles.sectionButton}>
-                  <Button title="In Progress" color={showstate=='InProgress' ? "#f9c2ff" : undefined} onPress={() => {showstate1()}}/>
+                  <Button title="In Progress" color={showstate=='In Progress' ? "#f9c2ff" : undefined} onPress={() => {showstate1()}}/>
                 </View>
                 <View style={styles.sectionButton}>
                   <Button title="Completed" color={showstate=='Completed' ? "#f9c2ff" : undefined} onPress={() => {showstate2()}}/>
@@ -218,8 +220,8 @@ function Home()  {
               data={Sortfav=='DueDate' ? task_dataIP.sort(function (a, b) {let x = new Date(a.duedate); let y = new Date(b.duedate); return x-y;}) : 
                    task_dataIP.sort(function (a, b) {if (a.priority > b.priority) {return -1;}if (a.priority < b.priority) {return 1;}return 0;})}
               extraData={Sortfav=='DueDate' ? task_dataIP.sort(function (a, b) {let x = new Date(a.duedate); let y = new Date(b.duedate); return x-y;}) : task_dataIP.sort(function (a, b) {if (a.priority > b.priority) {return -1;}if (a.priority < b.priority) {return 1;}return 0;})}
-              renderItem={({item}) => showstate=='InProgress' ?
-                (<View style={styles.item}>
+              renderItem={({item}) => showstate=='In Progress' ?
+                (<View style={styles.item}> 
                   <Text style={styles.TaskName}>{item.name} ({item.progress})</Text>
                   <Text style={styles.TaskPiority}>Priority Level: {item.priority == '1'? "Low" : 
                                                                     item.priority == '2'? "Medium" : "High"}</Text>
